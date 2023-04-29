@@ -25,13 +25,7 @@
   <% } %>
   </ul>
 
-  <ul class="comments">
-    <% for(var j=0; j<comments.length; j++) {%>
-      <li class="comment">
-        </span><%= comments[j].comment %></span>
-      </li>
-    <% } %>
-  </ul>
+ 
 
   <h2>Name your favorite series/movie</h2>
 
@@ -40,10 +34,20 @@
     <button type="submit">Submit</button>
   </form>
 
+  <h2>Comment</h2>
+
   <form action="/comments" method="POST">
     <input type="text" placeholder="comment" name="comment">
     <button type="submit" class="enter">Enter</button>
   </form>
+  
+  <ul class="comments">
+    <% for(var j=0; j<comments.length; j++) {%>
+      <li class="comment">
+        </span><%= comments[j].comment %></span>
+      </li>
+    <% } %>
+  </ul>
 
 
 
