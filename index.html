@@ -7,9 +7,17 @@
 <body>
   May Node and Express be with you.
 
+  <h2>Name your favorite series/movie</h2>
+
   <form action="/messages" method="POST">
     <input type="text" placeholder="name" name="name">
+    <input type="file" placeholder="add pic" name="profile-file" required/>
     <button type="submit">Submit</button>
+  </form>
+
+  <h2>Comment</h2>
+
+  <form action="/comments" method="POST">
     <input type="text" placeholder="comment" name="comment">
     <button type="submit" class="enter">Enter</button>
   </form>

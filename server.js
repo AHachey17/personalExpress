@@ -3,11 +3,26 @@ const app = express()
 const bodyParser = require('body-parser')
 const MongoClient = require('mongodb').MongoClient
 const giphy = require('giphy')('DHMRnWj25U9Xolkv4dhEHTUTRZs9kD7K')
+const multer  = require('multer')
 
 var db, collection;
 
 const url = "mongodb+srv://ahachey17:ABC123@exppersonalapp.o8tuwam.mongodb.net/?retryWrites=true&w=majority";
 const dbName = "exppersonalapp";
+
+
+var storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, './uploads')
+  },
+  filename: function (req, file, cb) {
+    cb(null, file.originalname)
+  }
+})
+var upload = multer({ storage: storage })
+
+
+
 
 app.listen(4000, () => {
     MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true }, (error, client) => {
@@ -18,6 +33,10 @@ app.listen(4000, () => {
         console.log("Connected to `" + dbName + "`!");
     });
 });
+
+app.use('/a',express.static('/b'));
+app.use(express.static(__dirname + '/public'));
+app.use('/uploads', express.static('uploads'));
 
 app.set('view engine', 'ejs')
 app.use(bodyParser.urlencoded({extended: true}))
@@ -100,4 +119,14 @@ app.put('/comments', (req, res) => {
     if (err) return res.send(err)
     res.send(result)
   })
+})
+
+app.post('/profile-upload-single', upload.single('profile-file'), function (req, res, next) {
+  // req.file is the `profile-file` file
+  // req.body will hold the text fields, if there were any
+  console.log(JSON.stringify(req.file))
+  var response = '<a href="/">Home</a><br>'
+  response += "Files uploaded successfully.<br>"
+  response += `<img src="${req.file.path}" /><br>`
+  return res.send(response)
 })

@@ -4,3 +4,12 @@ body{
 h3{
   margin-top: 40px;
 }
+.left{
+  float: left;
+  width: 50%;
+}
+
+.right{
+  float: right;
+  width: 50%;
+}

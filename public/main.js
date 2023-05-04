@@ -1,4 +1,4 @@
-var thumbUp = document.getElementsByClassName("fa-thumbs-up");
+var thumbUp = document.getElementsByClassName("fa-apple");
 var trash = document.getElementsByClassName("fa-trash");
 var comment = document.getElementsByClassName("enter");
 
@@ -28,13 +28,11 @@ Array.from(thumbUp).forEach(function(element) {
 
 Array.from(comments).forEach(function(element) {
   element.addEventListener('click', function(){
-    const name = this.parentNode.parentNode.childNodes[1].innerText
-    const comment = this.parentNode.parentNode.childNodes[3].innerText
+    const comment = this.parentNode.parentNode.childNodes[1].innerText
     fetch('comments', {
       method: 'put',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({
-        'name': name,
         'comment': comment
       })
     })
@@ -51,13 +49,15 @@ Array.from(comments).forEach(function(element) {
 Array.from(trash).forEach(function(element) {
       element.addEventListener('click', function(){
         const name = this.parentNode.parentNode.childNodes[1].innerText
+        const thumbUp = parseFloat(this.parentNode.parentNode.childNodes[3].innerText)
         fetch('messages', {
           method: 'delete',
           headers: {
             'Content-Type': 'application/json'
           },
           body: JSON.stringify({
-            'name': name
+            'name': name,
+            'thumbUp': thumbUp
           })
         }).then(function (response) {
           window.location.reload()
