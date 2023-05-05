@@ -4,6 +4,7 @@ const bodyParser = require('body-parser')
 const MongoClient = require('mongodb').MongoClient
 const giphy = require('giphy')('DHMRnWj25U9Xolkv4dhEHTUTRZs9kD7K')
 const multer  = require('multer')
+const ObjectID = require('mongodb').ObjectID
 
 var db, collection;
 
@@ -42,6 +43,7 @@ app.set('view engine', 'ejs')
 app.use(bodyParser.urlencoded({extended: true}))
 app.use(bodyParser.json())
 app.use(express.static('public'))
+app.use(express.static('views'))
 //everything above boiler plate
 app.get('/', (req, res) => {
   //go into db college get messgaes in an array
@@ -64,7 +66,7 @@ app.get('/', (req, res) => {
 
 //w.e stored in req input we get the doc that has body na
 app.post('/messages', (req, res) => {
-  db.collection('messages').insertOne({name: req.body.name, thumbUp: 0}, (err, result) => {
+  db.collection('messages').insertOne({name: req.body.name, thumbUp: 0, image: req.body.image}, (err, result) => {
     if (err) return console.log(err)
     console.log('saved to database')
     //sent something to database, to retrieve get request then refresh:
@@ -99,8 +101,17 @@ app.put('/messages/thumbUp', (req, res) => {
 })
 
 
+/* app.delete('/messages', (req, res) => {
+  console.log('working')
+  db.collection('messages').findOneAndDelete({name: req.body.name, image: req.body.image, thumbUp: req.body.thumbUp}, (err, result) => {
+    if (err) return res.send(500, err)
+    res.send('Message deleted!')
+  })
+}) */
+
 app.delete('/messages', (req, res) => {
-  db.collection('messages').findOneAndDelete({name: req.body.name}, (err, result) => {
+  console.log('working')
+  db.collection('messages').findOneAndDelete({_id: ObjectID(req.body.imageID)}, (err, result) => {
     if (err) return res.send(500, err)
     res.send('Message deleted!')
   })
@@ -121,7 +132,7 @@ app.put('/comments', (req, res) => {
   })
 })
 
-app.post('/profile-upload-single', upload.single('profile-file'), function (req, res, next) {
+/* app.post('/profile-upload-single', upload.single('profile-file'), function (req, res, next) {
   // req.file is the `profile-file` file
   // req.body will hold the text fields, if there were any
   console.log(JSON.stringify(req.file))
@@ -129,4 +140,4 @@ app.post('/profile-upload-single', upload.single('profile-file'), function (req,
   response += "Files uploaded successfully.<br>"
   response += `<img src="${req.file.path}" /><br>`
   return res.send(response)
-})
+}) */
