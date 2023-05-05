@@ -1,6 +1,6 @@
-var thumbUp = document.getElementsByClassName("fa-apple");
-var trash = document.getElementsByClassName("fa-trash");
-var comment = document.getElementsByClassName("enter");
+const thumbUp = document.getElementsByClassName("fa-apple");
+const trash = document.getElementsByClassName("fa-trash");
+const comment = document.getElementsByClassName("enter");
 
 Array.from(thumbUp).forEach(function(element) {
       element.addEventListener('click', function(){
@@ -50,15 +50,16 @@ Array.from(thumbUp).forEach(function(element) {
 }); */
 
 Array.from(trash).forEach(function(element) {
-  element.addEventListener('click', function(){
-    const imageID= this.getAttribute('data-trash')
-    fetch('messages', {
+  element.addEventListener('click', function(e){
+    const _id = e.target.dataset.id
+    console.log(_id)
+    fetch('/messages', {
       method: 'delete',
       headers: {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        'imageID': imageID
+        '_id': _id
       })
     }).then(function (response) {
       window.location.reload()
